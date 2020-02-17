@@ -30,6 +30,18 @@ class CacheExpired(ValueError):
     pass
 
 
+res_not_found = {
+    'message': 'not found',
+    'isError': True,
+    'color': 'critical'
+}
+
+res_internal_error = {
+    'message': 'server error',
+    'isError': True,
+    'color': 'critical'
+}
+
 @router.get(
     '/v/{item_id}',
     response_model=ShieldsEndpointSchema,
@@ -49,16 +61,14 @@ async def read_item(item_id: str):
             url = '%s/detail/%s' % (BASE_URL, item_id)
             r = await client.head(url)
 
+            if r.status_code == httpx.codes.NOT_FOUND:
+                return res_not_found
             # Save url as referer
             referer = url
             match = re.search(r'xsrf-token=([^;]+)',
                               r.headers.get('set-cookie'), re.I)
             if not match:
-                return {
-                    'message': 'server error',
-                    'isError': True,
-                    'color': 'critical'
-                }
+                return res_internal_error
             xsrf_token = match.group(1)
 
             from urllib.parse import urlparse
@@ -77,6 +87,9 @@ async def read_item(item_id: str):
                 '%s/ajax/extensions/%s?hl=ko' % (BASE_URL, item_id),
                 headers=headers
             )
+
+            if r.status_code == httpx.codes.NOT_FOUND:
+                return res_not_found
         # Skipping chracters that causing syntax error
         text = r.text[r.text.index('{'):]
 
@@ -84,11 +97,7 @@ async def read_item(item_id: str):
         try:
             j = json.loads(text)
         except json.decoder.JSONDecodeError as err:
-            return {
-                'message': 'server error',
-                'isError': True,
-                'color': 'critical'
-            }
+            return res_internal_error
         version = j.get('version')
         item = {'message': 'v'+version}
         cache[item_id] = CacheItem(item=item, timestamp=time())
