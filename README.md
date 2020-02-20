@@ -19,3 +19,9 @@ e.g.)
 ```
 
 [![FixImg](https://img.shields.io/endpoint?url=https%3A%2F%2Fapi.xvezda.com%2Fv1%2Fwhale-store%2Fv%2Fccamieeifalippbcdjfokaamepjpjcdo)](https://store.whale.naver.com/detail/ccamieeifalippbcdjfokaamepjpjcdo)
+
+
+## Hosting your own server
+```sh
+docker run xvezda/shields-endpoint-whale-store
+```
