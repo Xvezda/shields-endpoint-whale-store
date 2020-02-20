@@ -14,6 +14,8 @@ URL: `https://api.xvezda.com/v1/whale-store/v/{id}`
 
 e.g.)
 
-`[![FixImg](https://img.shields.io/endpoint?url=https%3A%2F%2Fapi.xvezda.com%2Fv1%2Fwhale-store%2Fv%2Fccamieeifalippbcdjfokaamepjpjcdo)](https://store.whale.naver.com/detail/ccamieeifalippbcdjfokaamepjpjcdo)`
+```markdown
+[![FixImg](https://img.shields.io/endpoint?url=https%3A%2F%2Fapi.xvezda.com%2Fv1%2Fwhale-store%2Fv%2Fccamieeifalippbcdjfokaamepjpjcdo)](https://store.whale.naver.com/detail/ccamieeifalippbcdjfokaamepjpjcdo)
+```
 
 [![FixImg](https://img.shields.io/endpoint?url=https%3A%2F%2Fapi.xvezda.com%2Fv1%2Fwhale-store%2Fv%2Fccamieeifalippbcdjfokaamepjpjcdo)](https://store.whale.naver.com/detail/ccamieeifalippbcdjfokaamepjpjcdo)
