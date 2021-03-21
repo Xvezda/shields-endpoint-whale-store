@@ -18,8 +18,8 @@
 
 * URL구성
     * `v1`: [shields.io][1] 스키마 버전에 변동이 있을경우 하위호환등의 이유로 별도의 주소를 제공할 수 있도록 prefix로 사용되는 path 입니다. `main.py`의 `CustomFastAPI` 서브클래스로 `fastapi`를 상속하여 구현됩니다.
-    * `v`: 대상의 버전 정보를 가져옵니다.
-    * `{id}`: 32자 영소문자로 구성된 웨일 스토어 ID값입니다. 각 상세페이지 URL의 끝자리를 통해 확인이 가능합니다. 예로 다음의 확장앱 상세페이지 URL는 다음과 같은 ID값을 갖습니다.
+    * `v`: 대상의 버전 정보를 가져오는것을 나타냅니다.
+    * `{id}`: 32자 영소문자로 구성된 웨일 스토어 ID값입니다. 각 상세페이지 URL의 끝자리를 통해 확인이 가능합니다. 예시로 다음의 확장앱 상세페이지 URL는 다음과 같은 ID값을 갖습니다.
         * URL: https://store.whale.naver.com/detail/ccamieeifalippbcdjfokaamepjpjcdo
         * ID: `ccamieeifalippbcdjfokaamepjpjcdo`
 
@@ -46,13 +46,12 @@ https://shields.io/endpoint
 
 ## 호스팅
 
-개인서버에 호스팅하기 위해선 현 저장소를 `git`을 이용해 `clone`하여 설치하는것도 가능하지만, docker hub에 이미지를 배포중이므로 아래의 명령어를 통해 빠르게 배포하는것이 가능합니다.
+개인서버에 호스팅하기 위해선 현 저장소를 `git`을 이용해 `clone`하여 설치하는것도 가능하지만, docker hub에 이미지를 배포중이므로 아래의 명령어를 통해 간편하고 빠르게 배포하는것이 가능합니다.
 
 ```sh
 docker run xvezda/shields-endpoint-whale-store
 ```
 
-## 각주
 
 [1]: https://shields.io/
 [2]: https://store.whale.naver.com/
