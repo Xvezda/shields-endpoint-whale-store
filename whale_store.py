@@ -20,9 +20,10 @@ from pydantic import BaseModel
 
 router = APIRouter()
 
+# Base url of target store
 BASE_URL = 'https://store.whale.naver.com'
+# Valid cache time represented in seconds
 CACHE_SECONDS = 14400
-
 cache = {}
 
 
@@ -32,11 +33,21 @@ class CacheItem(BaseModel):
 
 
 class ShieldsEndpointSchema(BaseModel):
+    '''Follows endpoint schema of shields.io
+
+    See: https://shields.io/endpoint
+    '''
+    # Required. Always the number 1.
     schemaVersion: int = 1
+    # Required. The left text, or the empty string to omit the left side of the badge. This can be overridden by the query string.
     label: str = 'whale store'
+    # Required. Can't be empty. The right text.
     message: str
+    # The right color. Supports the eight named colors above, as well as hex, rgb, rgba, hsl, hsla and css named colors. This can be overridden by the query string.
     color: str = 'blue'
+    # true to treat this as an error badge. This prevents the user from overriding the color. In the future it may affect cache behavior.
     isError: bool = False
+    # Set the HTTP cache lifetime in seconds, which should be respected by the Shields' CDN and downstream users. Values below 300 will be ignored. This lets you tune performance and traffic vs. responsiveness. The value you specify can be overridden by the user via the query string, but only to a longer value.
     cacheSeconds: int = CACHE_SECONDS
 
 
@@ -65,13 +76,16 @@ async def read_item(item_id: str):
         return {'message': 'bad id', 'isError': True, 'color': 'critical'}
     try:
         item_cache: CacheItem = cache[item_id]
+        # Remove cache item when item's timestamp passed limit.
         if time() - item_cache.timestamp >= CACHE_SECONDS:
             del cache[item_id]
             raise CacheExpired('cache expired')
         item = item_cache.item
     except (KeyError, CacheExpired) as err:
+        # Fetch information when cache expired or not exists.
         import httpx
         async with httpx.AsyncClient() as client:
+            # Access details page to fetch required informations such as cookie
             url = '%s/detail/%s' % (BASE_URL, item_id)
             r = await client.head(url)
 
@@ -114,6 +128,7 @@ async def read_item(item_id: str):
             return res_internal_error
         version = j.get('version')
         item = {'message': 'v'+version}
+        # Cache item for later use
         cache[item_id] = CacheItem(item=item, timestamp=time())
     return item
 
